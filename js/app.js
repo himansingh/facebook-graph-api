@@ -2,7 +2,7 @@ $(document).ready(function(){
 
 	$(".cssload-container").hide(); // hiding loader initially
 
-	var myToken = "EAACEdEose0cBAAuYIgHdc6JOIfYk87uCa6WnzwQaC3UJF7ICZAFA6ixO5hG1MZCGwrubY3lZA2Kx6maDZAGDikruD4OEaZBeLIqsCMZBuZCcFeOBQeF6vFvJzn08OuhjuIbc9LvfsDqwuDIZCuQjcobogK7BBxEt2Jf2MlYHFhWLTPyWGy8kZCc88n49BiYgWiLMZD";
+	var myToken = "EAACEdEose0cBAJYy0iaQnVT3qOWQZCKSmOjkemROZCU9UagOqECtnLVymDYbUZC56RiQwyZBDDDLmXBmG8oFo7nwMhZAKe7ctQCoxEx4f4eFfEh2LS1B303ub39YEmVqtxh8kwsPu6yF4W4oBE5ZCrWLlZBdz1gZC0HZCWZBwXQpCQ42GRG1KZB9uM6FvzdeZANpZBeMZD";
 
 	$("#basicInfoTab").on('click' , function(){
 
@@ -62,8 +62,13 @@ $(document).ready(function(){
 					if(response.languages !== null && response.languages !== undefined){
 						$('#name9').text("Languages");
 
-						for(var index=0 ; index < (response.languages).length ; index++ )
-						$('#val9').text( response.languages[index].name );
+						var lang = ""; 
+						for(var index=0 ; index < (response.languages).length ; index++ ){
+
+							lang += response.languages[index].name + " " ;
+
+						}
+						$('#val9').text( lang );
 					}	
 					
 				},
@@ -119,15 +124,11 @@ $(document).ready(function(){
 						if(response.education[i].school.name !== null && response.education[i].school.name !== undefined)
 						$('#val1' +i).text(response.education[i].school.name);
 
-						else {
-							alert(" Data not found");
-							break ;
-						}
-
-					}
+						
+					}					
 					
 										
-				},
+				}, // end of success function
 
 				error : function ( request ,errType , errMessage) {
 					alert ( errMessage + "\n Check Console and try again") ;
@@ -182,10 +183,13 @@ $(document).ready(function(){
 					
 					for(var i in response.favorite_athletes ){
 
-						( response.favorite_athletes[i].name !== undefined && response.favorite_athletes[i].name !== null)
+						if ( response.favorite_athletes[i].name !== undefined && response.favorite_athletes[i].name !== null)
 						{
-							$('#val1' + (atheletsPos+6)).text(response.favorite_athletes[i].name);
+							$('#val' + (atheletsPos+16)).text(response.favorite_athletes[i].name);
 							atheletsPos++;
+
+							if(atheletsPos === 5)
+								break ;
 						}
 
 											
@@ -199,9 +203,12 @@ $(document).ready(function(){
 					for(var x in response.favorite_teams){
 
 						if( response.favorite_teams[x].name !== null && response.favorite_teams[x].name !== undefined )
-						 {	$('#val2' + (teamPos+1)).text(response.favorite_teams[x].name);
+						 {	$('#val' + (teamPos+21)).text(response.favorite_teams[x].name);
 							teamPos++;
-							}
+
+							if(teamPos === 5)
+								break;
+						}
 						
 					}// end of loop
 					
@@ -254,32 +261,37 @@ $(document).ready(function(){
 
 				$('#feed-data').css ("background-color" , "#e9ebee");
 
+				element = response.posts.data ;
+				for(var i=0 ; i < 10 ; i++){
 
-				for( var i=0; i<10 ; i++) {
+					var storyId = "story"+i ;
+					var msgId = "msg"+i ;
+					var timeId = "time"+i ;
+					var descriptionId = "description"+i ;
+					console.log(storyId);
 
-					var element=(response.posts.data);
+					var stories = '<div class="col-xs-12" id ='+storyId+'>  </div>' ;
+					var times = '<div class="col-xs-12 " id=' +timeId+'>  </div>' ;
+					var msgs = '<div class="col-xs-12 " id='+msgId+'>  </div>' ;
+					var descriptions = '<div class="col-xs-12 " id='+descriptionId+' >  </div>' ;
+					var horizontalRule = "<hr>" ;
 
-					if(element[i].story !== null && element[i].story !== undefined){
-						$("#story"+ i).text(element[i].story);
-						$("#story"+i).css("font-weight" , "700");
-					}
-					
-					if(element[i].created_time !== null && element[i].created_time !== undefined)
-						$("#time"+i).text(element[i].created_time);
+					$("#feed-data-container").append(stories);
+					$("#feed-data-container").append(times);
+					$("#feed-data-container").append(msgs);
+					$("#feed-data-container").append(descriptions);
 
-					if(element[i].message !== null && element[i].message !== undefined)
-						$("#msg"+i).text(element[i].message);
+					$("#"+storyId).text(element[i].story);
+					$("#"+storyId).css("font-weight", "700");
 
-					if(element[i].description !== null && element[i].description !== undefined){
-						$("#description"+i).text(element[i].description);
-						$("#description"+i).css("font-style" , "italic");
+					$("#"+timeId).text(element[i].created_time);
+					$("#"+msgId).text(element[i].message);
+					$("#"+descriptionId).text(element[i].description);
+					$("#"+descriptionId).css("font-style" , "italic");
 
-					}
-						
-						$("#description" +i).append('<hr>') ;
-					
-										
-				} // end of loop	
+					$("#"+descriptionId).append(horizontalRule);
+
+				}	// end of loop
 
 								
 			}, // end of success function
