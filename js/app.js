@@ -2,7 +2,7 @@ $(document).ready(function(){
 
 	$(".cssload-container").hide(); // hiding loader initially
 
-	var myToken = "EAACEdEose0cBAJYy0iaQnVT3qOWQZCKSmOjkemROZCU9UagOqECtnLVymDYbUZC56RiQwyZBDDDLmXBmG8oFo7nwMhZAKe7ctQCoxEx4f4eFfEh2LS1B303ub39YEmVqtxh8kwsPu6yF4W4oBE5ZCrWLlZBdz1gZC0HZCWZBwXQpCQ42GRG1KZB9uM6FvzdeZANpZBeMZD";
+	var myToken = "EAACEdEose0cBAJrLCRI8lYgHWmDpNpYxD7PJ5QsASKoi1jui2TVzhmm7kP6juo10F6q9kW1YXOHVZBGnqHMwA9PgsEZBcDLCKUTdlCq6tPAsHK0p8knRYgJx3YxrsCpm7HlEpK6yW5k5HO4fqrFMjoVA1bpQZBC38sGLdB9JtY4In945P7zBnUAyzUJayMZD";
 
 	$("#basicInfoTab").on('click' , function(){
 
@@ -14,6 +14,8 @@ $(document).ready(function(){
 				method : "GET" ,
 
 				success : function (response) {
+
+					console.log(response) ;
 
 					$('#profileData').css ("background-color" , "#e9ebee");
 
@@ -37,10 +39,13 @@ $(document).ready(function(){
 						$('#name4').text("Gender");
 						$('#val4').text(response.gender);
 					}	
+
+					if(response.location !== null && response.location !== undefined){
 					
 					if(response.location.name !== null && response.location.name !== undefined){
 						$('#name5').text("Location");
 						$('#val5').text(response.location.name);
+					}
 					}
 
 					if(response.relationship_status !== null && response.relationship_status !== undefined){
@@ -249,7 +254,7 @@ $(document).ready(function(){
 
 	// Start of feed tab function
 
-		$("#loadFeed"). click(function(){
+var fun =	$("#loadFeed"). click(function(){
 
 		$.ajax( {
 
@@ -320,9 +325,6 @@ $(document).ready(function(){
 	}); // end of feed tab function
 
 
+		
 }); // end of document
 
-function favTeam(){
-
-
-}
